@@ -1,25 +1,36 @@
 from Tkinter import *
 from Platform import Platform
+from colors import tkColors
+from random import choice
+from globalVars import globalVars
 
-canvasWidth, canvasHeight = 640, 480
-movingLeft, movingRight = False, False
-floorlist = []
-platformSpeed = 5
 
 root = Tk()
 root.title("beat-drop")
-canvas = Canvas(root, width=canvasWidth, height=canvasHeight, bg='white')
+g = globalVars()
+canvas = Canvas(root, width=g.canvasWidth, height=g.canvasHeight, bg=g.background)
 canvas.pack()
+floorlist = []
+movingLeft, movingRight = False, False
+
 
 def setup() :
 
-    platformSpeed = 5
+    g.reset()
+    
+    while True :
+        g.mainColor = choice(tkColors)
+        if (g.mainColor != g.background): 
+            break
 
     while floorlist :
         del(floorlist[0])
 
     for x in xrange(400) :
-        floorlist.append(Platform(canvas, 3))
+        if x == 0 or x == 399:
+            print g.iteration
+        floorlist.append(Platform(canvas, g.iteration, g.mainColor))
+        g.iteration = g.firstX + x*640
 
 setup()
 
@@ -51,14 +62,13 @@ root.bind('<KeyRelease-Right>', stopRight)
 
 def tick() :
     global movingLeft, movingRight
-
     if movingLeft :
         for platform in floorlist :
-            canvas.move(platform.body, -platformSpeed, 0)
+            canvas.move(platform.body, -g.platformSpeed, 0)
     
     if movingRight :
         for platform in floorlist :
-            canvas.move(platform.body, platformSpeed, 0)
+            canvas.move(platform.body, g.platformSpeed, 0)
 
     canvas.after(5, tick)
 
