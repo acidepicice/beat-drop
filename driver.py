@@ -20,14 +20,14 @@ def setup() :
     
     while True :
         g.mainColor = choice(tkColors)
-        if (g.mainColor != g.background): 
+        if g.mainColor != g.background: 
             break
 
     while floorlist :
         del(floorlist[0])
 
-    for x in xrange(400) :
-        if x == 0 or x == 399:
+    for x in xrange(250) :
+        if x == 0 or x == 249:
             print g.iteration
         floorlist.append(Platform(canvas, g.iteration, g.mainColor))
         g.iteration = g.firstX + x*640
@@ -65,10 +65,14 @@ def tick() :
     if movingLeft :
         for platform in floorlist :
             canvas.move(platform.body, -g.platformSpeed, 0)
+            platform.x -= g.platformSpeed
+            platform.x2 -= g.platformSpeed
     
     if movingRight :
         for platform in floorlist :
             canvas.move(platform.body, g.platformSpeed, 0)
+            platform.x += g.platformSpeed
+            platform.x2 += g.platformSpeed
 
     canvas.after(5, tick)
 

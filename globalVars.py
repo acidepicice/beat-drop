@@ -11,7 +11,7 @@ class globalVars (object) :
         self.canvasWidth, self.canvasHeight = 640, 480
         self.background = choice(tkColors)
         self.mainColor = choice(tkColors)
-        self.firstX = -125000
+        self.firstX = -75000
         self.iteration = self.firstX
         self.platformSpeed = 5
 
