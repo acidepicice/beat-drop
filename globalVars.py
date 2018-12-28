@@ -3,7 +3,6 @@ from colors import tkColors
 
 class globalVars (object) :
 
-
     def __init__ (self) :
         self.reset()
 
@@ -14,6 +13,7 @@ class globalVars (object) :
         self.firstX = -75000
         self.iteration = self.firstX
         self.platformSpeed = 5
+        self.ballSpeed = 2
 
     
 

@@ -1,7 +1,8 @@
-from Tkinter import *
+from Tkinter import Tk, Canvas
 from Platform import Platform
+from Ball import Ball
 from colors import tkColors
-from random import choice
+from random import choice, randint
 from globalVars import globalVars
 
 
@@ -11,26 +12,30 @@ g = globalVars()
 canvas = Canvas(root, width=g.canvasWidth, height=g.canvasHeight, bg=g.background)
 canvas.pack()
 floorlist = []
+ball = None
 movingLeft, movingRight = False, False
 
 
 def setup() :
 
+    global ball
     g.reset()
+    canvas.delete('all')
     
-    while True :
+    g.mainColor = choice(tkColors)
+    g.background = choice(tkColors)
+    while g.mainColor == g.background :
         g.mainColor = choice(tkColors)
-        if g.mainColor != g.background: 
-            break
+    canvas.config(bg=g.background)
 
     while floorlist :
         del(floorlist[0])
 
     for x in xrange(250) :
-        if x == 0 or x == 249:
-            print g.iteration
         floorlist.append(Platform(canvas, g.iteration, g.mainColor))
         g.iteration = g.firstX + x*640
+    
+    ball = Ball(canvas, randint(0, g.canvasWidth - Ball.radius), -Ball.radius, g.mainColor)
 
 setup()
 
@@ -47,9 +52,7 @@ def moveRight(event) :
 def stopLeft(event) :
     global movingLeft
     movingLeft = False
-def stopLeft(event) :
-    global movingLeft
-    movingLeft = False
+
 def stopRight(event) :
     global movingRight
     movingRight = False
@@ -73,6 +76,16 @@ def tick() :
             canvas.move(platform.body, g.platformSpeed, 0)
             platform.x += g.platformSpeed
             platform.x2 += g.platformSpeed
+    
+    ball.move(g.ballSpeed)
+
+    if ball.x <= 0 or ball.x2 >= g.canvasWidth :
+        g.ballSpeed *= -1
+
+    if ball.y2 > Platform.y and ball.y2 < Platform.y2 :
+        for platform in floorlist :
+            if (ball.x > platform.x and ball.x < platform.x2) or  (ball.x2 > platform.x and ball.x2 < platform.x2):
+                setup()
 
     canvas.after(5, tick)
 
