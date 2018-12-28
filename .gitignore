@@ -1,2 +1,5 @@
 # Ignore Python compilation files
 *.pyc
+
+# Ignore macOS hidden file
+.DS_STORE

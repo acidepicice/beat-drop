@@ -1,6 +1,7 @@
 from Tkinter import Tk, Canvas
 from Platform import Platform
 from Ball import Ball
+from Movement import Movement
 from colors import tkColors
 from random import choice, randint
 from globalVars import globalVars
@@ -13,7 +14,6 @@ canvas = Canvas(root, width=g.canvasWidth, height=g.canvasHeight, bg=g.backgroun
 canvas.pack()
 floorlist = []
 ball = None
-movingLeft, movingRight, movingUp, movingDown = False, False, False, False
 
 
 def setup() :
@@ -39,72 +39,35 @@ def setup() :
 
 setup()
 
-def moveLeft(event) :
-    global movingLeft, movingRight
-    movingRight = False
-    movingLeft = True
-
-def moveRight(event) :
-    global movingLeft, movingRight
-    movingLeft = False
-    movingRight = True
-
-def moveUp(event) :
-    global movingUp, movingDown
-    movingUp = True
-    movingDown = False
-
-def moveDown(event) :
-    global movingUp, movingDown
-    movingUp = False
-    movingDown = True
-
-def stopLeft(event) :
-    global movingLeft
-    movingLeft = False
-
-def stopRight(event) :
-    global movingRight
-    movingRight = False
-
-def stopUp(event) :
-    global movingUp
-    movingUp = False
-
-def stopDown(event) :
-    global movingDown
-    movingDown = False
-
-root.bind('<Left>', moveLeft)
-root.bind('<Right>', moveRight)
-root.bind('<Up>', moveUp)
-root.bind('<Down>', moveDown)
-root.bind('<KeyRelease-Left>', stopLeft)
-root.bind('<KeyRelease-Right>', stopRight)
-root.bind('<KeyRelease-Up>', stopUp)
-root.bind('<KeyRelease-Down>', stopDown)
+root.bind('<Left>', Movement.moveLeft)
+root.bind('<Right>', Movement.moveRight)
+root.bind('<Up>', Movement.moveUp)
+root.bind('<Down>', Movement.moveDown)
+root.bind('<KeyRelease-Left>', Movement.stopLeft)
+root.bind('<KeyRelease-Right>', Movement.stopRight)
+root.bind('<KeyRelease-Up>', Movement.stopUp)
+root.bind('<KeyRelease-Down>', Movement.stopDown)
 
 def tick() :
-    global movingLeft, movingRight
-    if movingLeft :
+    if Movement.movingLeft :
         for platform in floorlist :
             canvas.move(platform.body, -g.platformSpeed, 0)
             platform.x -= g.platformSpeed
             platform.x2 -= g.platformSpeed
     
-    if movingRight :
+    if Movement.movingRight :
         for platform in floorlist :
             canvas.move(platform.body, g.platformSpeed, 0)
             platform.x += g.platformSpeed
             platform.x2 += g.platformSpeed
     
-    if movingUp :
+    if Movement.movingUp :
         for platform in floorlist :
             canvas.move(platform.body, 0, -g.platformSpeed)
         Platform.y -= g.platformSpeed
         Platform.y2 -= g.platformSpeed
     
-    if movingDown :
+    if Movement.movingDown :
         for platform in floorlist :
             canvas.move(platform.body, 0, g.platformSpeed)
         Platform.y += g.platformSpeed
