@@ -7,7 +7,6 @@ class Movement () :
 
     @staticmethod
     def moveLeft(event) :
-        print "yeet"
         Movement.movingRight = False
         Movement.movingLeft = True
 

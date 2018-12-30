@@ -18,6 +18,7 @@ ball = None
 
 def setup() :
 
+    print "reset"
     global ball
     g.reset()
     canvas.delete('all')
@@ -82,7 +83,26 @@ def tick() :
         for platform in floorlist :
             if (ball.x > platform.x and ball.x < platform.x2) or  (ball.x2 > platform.x and ball.x2 < platform.x2):
                 setup()
+    
+    if ball.y >= g.canvasHeight :
+        print("over")
+        g.colorSwitch()
+        canvas.config(bg=g.background)
+        for platform in floorlist :
+            canvas.itemconfig(platform.body, fill=g.mainColor)
 
+        ball.x = randint(0, g.canvasWidth-Ball.radius)
+        ball.x2 = ball.x + Ball.radius
+        ball.y = -Ball.radius
+        ball.y2 = 0
+        canvas.coords(ball.body, ball.x, ball.y, ball.x2, ball.y2)
+        canvas.itemconfig(ball.body, fill=g.mainColor)
+        
+        if randint(0,1) == 0 :
+            g.ballSpeed *= -1
+            
+
+    
     canvas.after(5, tick)
 
 

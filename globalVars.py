@@ -14,6 +14,13 @@ class globalVars (object) :
         self.iteration = self.firstX
         self.platformSpeed = 5
         self.ballSpeed = 2
+    
+    def colorSwitch (self) :
+        self.mainColor = choice(tkColors)
+        self.background = choice(tkColors)
+        while self.mainColor == self.background :
+            self.mainColor = choice(tkColors)
+        
 
     
 
